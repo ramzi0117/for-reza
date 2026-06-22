@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Reza ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+/* ===================================================== */
+/* ================= EDIT DISINI AJA =================== */
+/* ===================================================== */
+
+/* JUDUL */
+const TITLE = "FOR REZA";
+const SUBTITLE = "Our story was never a single page.";
+
+/* FILES */
+const CHAPTER_1_FILE = "chapter-1.html";
+const CHAPTER_2_FILE = "chapter-2.html";
+const CHAPTER_3_FILE = "chapter-3.html";
+const CHAPTER_4_FILE = "chapter-4.html";
+const CHAPTER_5_FILE = "chapter-5.html";
+
+const OPEN_WHEN_1_FILE = "open-when-sad.html";
+const OPEN_WHEN_2_FILE = "open-when-miss-me.html";
+const OPEN_WHEN_3_FILE = "open-when-angry.html";
+const OPEN_WHEN_4_FILE = "open-when-hug.html";
+const OPEN_WHEN_5_FILE = "open-when-motivation.html";
+
+const LAST_UPDATED = "22 June 2026";
+const FOOTER_TEXT = "Last Updated • " + LAST_UPDATED;
+
+const CHAPTER_1_TITLE = "A Little Gift";
+const CHAPTER_1_DESC = "Juni 2026";
+
+const CHAPTER_2_TITLE = "Coming Soon";
+const CHAPTER_2_DESC = "Locked";
+
+const CHAPTER_3_TITLE = "Coming Soon";
+const CHAPTER_3_DESC = "Locked";
+
+const CHAPTER_4_TITLE = "Coming Soon";
+const CHAPTER_4_DESC = "Locked";
+
+const CHAPTER_5_TITLE = "Coming Soon";
+const CHAPTER_5_DESC = "Locked";
+
+const LAST_CHAPTER_DESC =
+"This page will only be opened when our story reaches its end.";
+
+const SECRET_PASSWORD = "rasional";
+
+const OPEN_WHEN_1 = "Open When You're Sad";
+const OPEN_WHEN_2 = "Open When You Miss Me";
+const OPEN_WHEN_3 = "Open When You're Angry";
+const OPEN_WHEN_4 = "Open When You Need A Hug";
+const OPEN_WHEN_5 = "Open When You Need Motivation";
+</script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#000;color:#fff;padding:25px;min-height:100vh}
+.container{max-width:650px;margin:auto;padding:80px 0}
+.title{text-align:center;font-size:42px;font-weight:700}
+.subtitle{text-align:center;color:#999;margin-top:15px}
+.divider{width:80px;height:1px;background:#222;margin:35px auto}
+.menu{display:flex;flex-direction:column;gap:18px}
+.card{background:#111;border:1px solid #1f1f1f;border-radius:28px;padding:26px}
+.card-title{display:flex;justify-content:space-between;align-items:center;font-size:20px;font-weight:600;cursor:pointer}
+.arrow{transition:.3s}
+.card.open .arrow{transform:rotate(180deg)}
+.card-desc,.chapter-desc,.last-desc{color:#888}
+.chapter-container{max-height:0;overflow:hidden;transition:.4s}
+.card.open .chapter-container{max-height:380px;margin-top:20px}
+.chapter-scroll{max-height:280px;overflow-y:auto;border-top:1px solid #1f1f1f;padding-top:18px}
+.chapter{padding:14px 0;border-bottom:1px solid #1a1a1a}
+.chapter.active{cursor:pointer}
+.locked,.locked-text{color:#555;font-size:11px}
+.last-chapter{margin-top:20px;padding-top:20px;border-top:1px solid #1f1f1f}
+.secret-input,.secret-btn{width:100%;padding:14px;border-radius:14px}
+.secret-input{margin-top:20px;background:#0d0d0d;border:1px solid #222;color:#fff}
+.secret-btn{margin-top:12px;border:none;background:#1a1a1a;color:#fff;cursor:pointer}
+.footer{text-align:center;color:#555;margin-top:35px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1 class="title" id="title"></h1>
+<p class="subtitle" id="subtitle"></p>
+<div class="divider"></div>
+
+<div class="menu">
+
+<div class="card" id="chapterCard">
+<div class="card-title" onclick="toggleCard('chapterCard')">
+<span>📖 Choose a Chapter</span><span class="arrow">⌄</span>
+</div>
+<div class="card-desc">Every memory deserves its own chapter.</div>
+<div class="chapter-container">
+<div class="chapter-scroll">
+<div class="chapter active" onclick="window.location.href=CHAPTER_1_FILE">
+<div>Chapter I</div><div class="chapter-desc" id="chapter1"></div></div>
+<div class="chapter"><div>Chapter II</div><div class="chapter-desc" id="chapter2"></div><div class="locked-text">🔒 Locked</div></div>
+<div class="chapter"><div>Chapter III</div><div class="chapter-desc" id="chapter3"></div><div class="locked-text">🔒 Locked</div></div>
+<div class="chapter"><div>Chapter IV</div><div class="chapter-desc" id="chapter4"></div><div class="locked-text">🔒 Locked</div></div>
+<div class="chapter"><div>Chapter V</div><div class="chapter-desc" id="chapter5"></div><div class="locked-text">🔒 Locked</div></div>
+<div class="last-chapter"><div>Last Chapter 🔒</div><div class="last-desc" id="lastChapter"></div></div>
+</div>
+</div>
+</div>
+
+<div class="card" id="openWhenCard">
+<div class="card-title" onclick="toggleCard('openWhenCard')">
+<span>💌 Open When...</span><span class="arrow">⌄</span>
+</div>
+<div class="locked">Locked</div>
+<div class="chapter-container">
+<div class="chapter-scroll">
+<div class="chapter active" onclick="window.location.href=OPEN_WHEN_1_FILE"><div id="ow1"></div></div>
+<div class="chapter"><div id="ow2"></div><div class="locked-text">🔒 Locked</div></div>
+<div class="chapter"><div id="ow3"></div><div class="locked-text">🔒 Locked</div></div>
+<div class="chapter"><div id="ow4"></div><div class="locked-text">🔒 Locked</div></div>
+<div class="chapter"><div id="ow5"></div><div class="locked-text">🔒 Locked</div></div>
+</div>
+</div>
+</div>
+
+<div class="card" onclick="lockedAlert()">
+<div class="card-title">📸 Album</div>
+<div class="locked">Locked</div>
+</div>
+
+<div class="card" id="secretCard">
+<div class="card-title" onclick="toggleCard('secretCard')">
+<span>🔒 Secret Room</span><span class="arrow">⌄</span>
+</div>
+<div class="locked">Locked</div>
+<div class="chapter-container">
+<input id="secretPassword" class="secret-input" type="password" placeholder="Enter Password">
+<button class="secret-btn" onclick="unlockSecret()">Unlock</button>
+</div>
+</div>
+
+</div>
+
+<div class="footer" id="footer"></div>
+</div>
+
+<script>
+title.textContent=TITLE;
+subtitle.textContent=SUBTITLE;
+footer.textContent=FOOTER_TEXT;
+
+chapter1.textContent=CHAPTER_1_TITLE+" • "+CHAPTER_1_DESC;
+chapter2.textContent=CHAPTER_2_TITLE+" • "+CHAPTER_2_DESC;
+chapter3.textContent=CHAPTER_3_TITLE+" • "+CHAPTER_3_DESC;
+chapter4.textContent=CHAPTER_4_TITLE+" • "+CHAPTER_4_DESC;
+chapter5.textContent=CHAPTER_5_TITLE+" • "+CHAPTER_5_DESC;
+
+lastChapter.textContent=LAST_CHAPTER_DESC;
+
+ow1.textContent=OPEN_WHEN_1;
+ow2.textContent=OPEN_WHEN_2;
+ow3.textContent=OPEN_WHEN_3;
+ow4.textContent=OPEN_WHEN_4;
+ow5.textContent=OPEN_WHEN_5;
+
+function toggleCard(id){document.getElementById(id).classList.toggle('open');}
+
+function lockedAlert(){
+Swal.fire({icon:'info',title:'Locked',text:'This section has not been written yet.',background:'#111',color:'#fff'});
+}
+
+function unlockSecret(){
+if(document.getElementById('secretPassword').value===SECRET_PASSWORD){
+Swal.fire({title:'Access Granted ❤️',text:'This room has not been written yet.',background:'#111',color:'#fff'});
+}else{
+Swal.fire({icon:'error',title:'Access Denied',text:'Wrong Password',background:'#111',color:'#fff'});
+}
+}
+</script>
+</body>
+</html>
