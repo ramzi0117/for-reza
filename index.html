@@ -174,11 +174,37 @@ Swal.fire({icon:'info',title:'Locked',text:'This section has not been written ye
 }
 
 function unlockSecret(){
-if(document.getElementById('secretPassword').value===SECRET_PASSWORD){
-Swal.fire({title:'Access Granted ❤️',text:'This room has not been written yet.',background:'#111',color:'#fff'});
+
+const password =
+document.getElementById(
+'secretPassword'
+).value;
+
+if(password === SECRET_PASSWORD){
+
+window.location.href =
+'secret.html';
+
 }else{
-Swal.fire({icon:'error',title:'Access Denied',text:'Wrong Password',background:'#111',color:'#fff'});
+
+Swal.fire({
+
+icon:'error',
+
+title:'Access Denied',
+
+text:'Wrong Password',
+
+background:'#111',
+
+color:'#fff',
+
+confirmButtonColor:'#ff2d75'
+
+});
+
 }
+
 }
 </script>
 </body>
