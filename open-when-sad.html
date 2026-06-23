@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Open When You're Sad</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#000;
+color:white;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:25px;
+overflow:hidden;
+}
+
+.particle{
+position:fixed;
+width:2px;
+height:2px;
+background:white;
+opacity:.15;
+border-radius:50%;
+animation:float linear infinite;
+}
+
+@keyframes float{
+from{transform:translateY(110vh);opacity:0;}
+20%{opacity:.15;}
+to{transform:translateY(-10vh);opacity:0;}
+}
+
+.container{
+width:100%;
+max-width:650px;
+position:relative;
+z-index:10;
+}
+
+.card{
+background:#111;
+border:1px solid #1f1f1f;
+border-radius:30px;
+padding:35px;
+text-align:center;
+box-shadow:0 0 40px rgba(255,255,255,.03);
+}
+
+.tag{
+font-size:12px;
+letter-spacing:3px;
+color:#666;
+text-transform:uppercase;
+}
+
+.title{
+margin-top:15px;
+font-size:34px;
+font-weight:700;
+}
+
+.subtitle{
+margin-top:15px;
+font-size:14px;
+line-height:28px;
+color:#888;
+}
+
+.message-box{
+margin-top:35px;
+padding:35px;
+background:#0d0d0d;
+border-radius:24px;
+border:1px solid #1f1f1f;
+min-height:150px;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.message{
+font-size:20px;
+font-weight:600;
+line-height:40px;
+text-align:center;
+}
+
+.btn{
+margin-top:25px;
+padding:15px 25px;
+border:none;
+border-radius:999px;
+background:white;
+color:black;
+font-weight:600;
+cursor:pointer;
+transition:.2s;
+}
+
+.btn:hover{
+transform:scale(.97);
+}
+
+.counter{
+margin-top:25px;
+font-size:12px;
+color:#666;
+}
+
+.home{
+display:inline-block;
+margin-top:20px;
+color:#999;
+text-decoration:none;
+font-size:13px;
+}
+
+.home:hover{
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<div class="tag">OPEN WHEN</div>
+<div class="title">You're Sad</div>
+<div class="subtitle">Some words are waiting for you.</div>
+
+<div class="message-box">
+<div class="message" id="message">...</div>
+</div>
+
+<button class="btn" onclick="generateMessage()">✨ Another Message</button>
+
+<div class="counter" id="counter">Messages Opened : 0</div>
+
+<br>
+<a href="index.html" class="home">❤ Return Home</a>
+
+</div>
+
+</div>
+
+<script>
+
+/* ================= FULL MESSAGE LIST ================= */
+
+const MESSAGES = [
+"aku bangga sama kamu.",
+"hari ini berat, tapi kamu masih di sini.",
+"istirahat bukan berarti menyerah sayang.",
+"pelan-pelan juga tetap ada pergerakan ko.",
+"minum air dulu ya.",
+"tarik napas. satu kali lagi.",
+"aku harap kamu tidak terlalu keras pada dirimu sendiri.",
+"kamu tidak harus kuat setiap saat. coba andelin pecel ayam",
+"kalau capek, istirahat. bukan dugem haha.",
+"aku percaya kamu bisa.",
+"semua akan menemukan tempatnya nanti.",
+"aku harap kamu makan, apa udah?.",
+"bahkan langit juga kadang mendung.",
+"jangan lupa, kamu dicintai.",
+"aku akan tetap memilih kamu.",
+"kamu sudah melakukan yang terbaik.",
+"tidak semua hal harus selesai hari ini.",
+"aku harap kamu memaafkan dirimu sendiri.",
+"kamu lebih kuat dari yang kamu kira.",
+"terima kasih sudah bertahan.",
+"aku tahu kamu sedang berusaha.",
+"hari ini boleh sedih.",
+"besok kita coba lagi.",
+"kalau dunia terlalu ramai, istirahatlah sebentar.",
+"aku berharap kamu lebih lembut pada dirimu.",
+"semoga tidurmu nyenyak malam ini.",
+"aku berharap kamu baik-baik saja.",
+"bahkan saat kamu tidak percaya diri, aku tetap percaya.",
+"aku suka versi kamu yang sekarang.",
+"tidak perlu sempurna untuk dicintai.",
+"aku harap kamu tersenyum sebentar setelah membaca ini.",
+"kamu tidak sendirian.",
+"aku ada.",
+"aku masih di sini.",
+"peluk virtual dulu sini.",
+"anggap ini pelukan yang tertunda.",
+"aku harap hatimu segera tenang.",
+"coba lihat sejauh apa kamu sudah berjalan.",
+"aku tahu ini tidak mudah.",
+"aku mengerti kalau kamu lelah.",
+"terima kasih sudah tidak menyerah hari ini.",
+"jangan lupa makan.",
+"dan jangan lupa aku juga sayang kamu.",
+"sedikit demi sedikit, ya?",
+"hari ini cukup dijalani saja.",
+"aku berharap kamu menemukan alasan untuk tersenyum.",
+"kalau aku ada di sana, aku bakal genggam tanganmu.",
+"kalau aku ada di sana, aku bakal bilang semuanya akan baik-baik saja.",
+"aku kangen senyum kamu.",
+"coba lihat kaca, ada orang hebat di sana.",
+"aku harap kamu memberi dirimu waktu.",
+"tidak apa-apa menangis.",
+"tidak apa-apa merasa lelah.",
+"tidak apa-apa meminta bantuan.",
+"aku senang kamu masih di sini.",
+"terima kasih karena terus berjalan.",
+"aku sayang kamu.",
+"coba minum dulu sebelum overthinking.",
+"aku tau kamu lagi ga baik-baik aja.",
+"iya, dunia lagi nyebelin ya?",
+"jangan marah sama diri sendiri terus.",
+"aku ga tau harus ngomong apa, jadi aku duduk sini aja.",
+"kalau capek, tidur.",
+"kalau laper, makan.",
+"kalau dua-duanya, ya dua-duanya.",
+"hari ini jelek, besok kita hina lagi bareng.",
+"aku ga bisa berantem sama dunia buat kamu, tapi aku bisa nemenin.",
+"coba buka galeri, terus liat foto bunga itu.",
+"aku masih suka senyum kalau liat foto kita.",
+"aku harap hari ini ga sejahat yang kamu pikir.",
+"peluk virtual, berlaku 24 jam.",
+"cba inget suara ketawa kamu sendiri.",
+"kamu lucu kalau lagi ngomel.",
+"aku tau kamu kuat, tapi ga harus sekarang.",
+"ga semua hal harus diselesaikan malam ini.",
+"coba rebahan dulu, revolusi bisa besok.",
+"aku pesen satu pelukan atas nama reza.",
+"kalau aku ada di sampingmu sekarang, mungkin aku cuma nyolek jidatmu.",
+"sedih dulu gapapa, nanti kita makan.",
+"aku tau kamu lagi cape.",
+"aku juga kangen versi kamu yang lagi senyum.",
+"tenang, bumi masih muter.",
+"dan aku masih sayang kamu.",
+"anggap ini surat yang nyasar dari masa depan.",
+"jangan lupa, bunga pertama kita pernah hidup lebih lama dari bad mood ini.",
+"aku pilih kamu, bahkan pas kamu lagi nyebelin.",
+"kalau ga kuat, istirahat. jangan menghilang.",
+"tentang kamu, aku, dan rasa lapar.",
+"ayam itu mati tidak sia-sia.",
+"coba bayangin telur dadar gosong itu.",
+"aku masih inget mirror selfie itu.",
+"bunga lagi, bunga lagi.",
+"aku curiga kamu cuma kurang makan.",
+"pelukan pantai masih tersedia.",
+"silakan klaim satu genggaman tangan.",
+"makan.",
+"minum.",
+"tidur.",
+"napas dulu.",
+"jangan gigit meja.",
+"aku curiga kamu laper.",
+"ayam itu tidak mati sia-sia.",
+"rebahan bentar.",
+"jangan ngamuk dulu.",
+"ga usah jadi pahlawan hari ini.",
+"besok aja stresnya.",
+"aku tau.",
+"iya iya iya.",
+"peluk virtual.",
+"peluk fisik menyusul.",
+"coba senyum dikit.",
+"jangan manyun.",
+"aku liat tuh manyunnya.",
+"tenang bos.",
+"masih hidup kan?",
+"bagus.",
+"survive dulu.",
+"jangan banting bumi.",
+"bumi ga salah.",
+"kipas angin juga ga salah.",
+"aku juga ga salah.",
+"eh mungkin sedikit.",
+"bunga lagi bunga lagi.",
+"ingat pantai.",
+"ingat bekal.",
+"ingat kita.",
+"ingat makan.",
+"ingat aku.",
+"aku ada.",
+"masih ada.",
+"belum kabur.",
+"aku tungguin.",
+"sedih boleh.",
+"hilang jangan.",
+"capek ya?",
+"iya aku tau.",
+"aku ngerti kok.",
+"ga harus kuat terus.",
+"istirahat bentar.",
+"tarik napas.",
+"lagi.",
+"sekali lagi.",
+"nah gitu.",
+"good girl.",
+"cie sedih.",
+"cie ngambek.",
+"cie overthinking.",
+"aku kenal muka itu.",
+"aku hafal muka itu.",
+"udah jangan nangis.",
+"nangis juga gapapa sih.",
+"asal jangan sendiri.",
+"aku kangen ketawamu.",
+"aku pilih kamu.",
+"masih.",
+"tetep.",
+"selalu.",
+"aku sayang kamu.",
+"udah gitu aja.",
+"scroll lagi sana.",
+"masih nyari pesan?",
+"yaudah nih.",
+"peluk.",
+"peluk lagi.",
+"peluk terus.",
+"aku pesen satu bahagia buat kamu.",
+"sedihnya jangan lama-lama.",
+"ayo balik hidup.",
+"ayo makan.",
+"ayo tidur.",
+"ayo sini.",
+];
+
+/* ================= SHUFFLE ================= */
+
+function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+/* ================= STATE ================= */
+
+let deck;
+try {
+    deck = JSON.parse(localStorage.getItem("deck"));
+} catch (e) {
+    deck = null;
+}
+
+if (!Array.isArray(deck) || deck.length === 0) {
+    deck = shuffle(MESSAGES);
+}
+
+let opened = Number(localStorage.getItem("sadCounter"));
+if (isNaN(opened)) opened = 0;
+
+/* ================= INIT ================= */
+
+window.addEventListener("DOMContentLoaded", () => {
+
+    const msgEl = document.getElementById("message");
+    const counterEl = document.getElementById("counter");
+
+    counterEl.innerText = "Messages Opened : " + opened;
+
+    window.generateMessage = function () {
+
+        if (deck.length === 0) {
+            alert("Semua pesan telah dibaca.\nMengacak ulang...");
+            deck = shuffle(MESSAGES);
+        }
+
+        const msg = deck.pop();
+
+        localStorage.setItem("deck", JSON.stringify(deck));
+
+        msgEl.innerText = msg;
+
+        opened++;
+        localStorage.setItem("sadCounter", opened);
+
+        counterEl.innerText = "Messages Opened : " + opened;
+    };
+
+    generateMessage();
+});
+
+/* ================= PARTICLES ================= */
+
+for (let i = 0; i < 35; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = (10 + Math.random() * 10) + "s";
+    p.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(p);
+}
+
+</script>
+
+</body>
+</html>
